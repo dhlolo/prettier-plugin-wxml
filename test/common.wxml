@@ -1,0 +1,2 @@
+<view class="{{a ? 'b' : 'c'}}"></view>
+<view class="{{a ? 'b' : 'c'}}"></view>

@@ -1,17 +1,20 @@
 const prettier = require('prettier');
-const { writeFileSync, readFileSync } = require('fs');
+const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const TEST_PATH = resolve(__dirname, './raw');
 
 function test(filepath) {
     const code = readFileSync(filepath, 'utf8');
-    const result = prettier.format(code, {
+    const formatted = prettier.format(code, {
         parser: 'wxml-parse',
         plugins: ['./src/index']
     });
     const filename = filepath.split('/').pop();
-    const outputPath = resolve(__dirname, filename);
-    writeFileSync(outputPath, result);
+    const expectedPath = resolve(__dirname, filename);
+    const expectedContent = readFileSync(expectedPath, 'utf-8');
+    if (formatted !== expectedContent) {
+        console.error(filename + 'prettier format failed');
+    }
 }
 
 function batchTest() {
