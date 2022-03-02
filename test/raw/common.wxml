@@ -1,0 +1,57 @@
+<view class="goods-card">
+    <view class="title-wrap" bindtap="handleSelectGoods">
+        <view class="wrap-flex">
+            <checkBoxBtn select="{{isSelected}}" />
+            <view class="title op-title">{{item.title}}</view>
+        </view>
+        <view wx:if="{{isPageItem}}" class="right-wrap" catchtap="handleDetail">
+            <view class="right-icon"></view>
+        </view>
+        <view class="wrap-flex" wx:elif="{{!isOnlyShow}}">
+            <view data-type="up" class="op-btn {{isFirst ? 'disable' : ''}}" catchtap="handleMove">上移</view>
+            <view data-type="down" class="op-btn {{isLast ? 'disable' : ''}}" catchtap="handleMove">下移</view>
+            <view data-type="top" class="op-btn {{isFirst ? 'disable' : ''}}" catchtap="handleMove">置顶</view>
+        </view>
+    </view>
+    <view class="goods-wrap" bindtap="handleClick">
+        <view class="amount-info">
+            <view class="amount"><text>¥</text>{{item.goodsInfo.fmtPrice}}</view>
+            <view class="status">
+                <text wx:if="{{item.status === ActivityStatus.PREVIEW}}" class="status-preview">未发布</text>
+                <text wx:elif="{{item.status === ActivityStatus.STOPPED}}" class="status-over">已结束</text>
+                <text wx:elif="{{item.status === ActivityStatus.DELETE}}" class="status-over">已删除</text>
+                <text wx:elif="{{item.status === ActivityStatus.NOT_STARTED}}" class="status-not-start">未开始</text>
+                <text wx:else>正在跟团中</text>
+            </view>
+        </view>
+        <view class="goods-info">
+            <view wx:if="{{item.redPacketGroup}}" class="tag red-packet"></view>
+            <view
+                wx:for="{{discountInfoList}}"
+                wx:key="index"
+                wx:for-item="couponItem"
+                class="tag coupon {{couponItem.isFirstRedPacket ? 'goods-tag': ''}}"
+                >{{couponItem.discountDesc}}</view
+            >
+        </view>
+        <view wx:if="{{item.displayImageList && item.displayImageList.length}}" class="img-wrap">
+            <view class="goods-image" wx:for="{{item.displayImageList}}" wx:for-item="goodsImg" wx:key="*this">
+                <kttMaskImage>
+                    <imgWrap
+                        class="goods-image"
+                        external-class="goods-image"
+                        lazyLoad="{{true}}"
+                        resizeWidth="318"
+                        src="{{goodsImg.picUrl}}"
+                        mode="aspectFill"
+                    />
+                </kttMaskImage>
+                <image
+                    wx:if="{{goodsImg.type === feedsImgDisplayType.VIDEO_COVER_NO_ICON && goodsImg.picUrl}}"
+                    class="play-icon"
+                    src="{{playIcon}}"
+                />
+            </view>
+        </view>
+    </view>
+</view>
